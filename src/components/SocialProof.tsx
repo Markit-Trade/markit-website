@@ -1,32 +1,69 @@
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
+import AutoScroll from "embla-carousel-auto-scroll";
+
 const SocialProof = () => {
   const customers = [
-    { name: "Global Trade Partners", logo: "GTP" },
-    { name: "Asia Logistics Group", logo: "ALG" },
-    { name: "International Customs", logo: "IC" },
-    { name: "Enterprise Shipping Co", logo: "ESC" },
+    { name: "Hanwha", logo: "/hanwha logo.png" },
+    { name: "Hyundai Motor Manufacturing Alabama", logo: "/hmma logo.png" },
+    { name: "Schaeffler", logo: "/schaf logo.png" },
+    { name: "SK", logo: "/sk logo.png" },
+    { name: "Syeonewha", logo: "/syeonewha logo.png" },
   ];
 
   return (
-    <section className="py-12 px-8 bg-card/30">
-      <div className="max-w-[1400px] mx-auto">
-        <p className="text-center text-xs text-muted-foreground uppercase tracking-widest font-semibold mb-10">
-          Trusted by leading customs brokers and enterprise logistics providers
+    <section className="py-10 px-8 bg-background">
+      <div className="max-w-[1200px] mx-auto">
+        <p className="text-center text-xs text-muted-foreground uppercase tracking-widest font-medium mb-10">
+          Trusted by leading global enterprises
         </p>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {customers.map((customer, i) => (
-            <div
-              key={i}
-              className="group flex items-center justify-center p-4 border border-foreground/10 rounded bg-background hover:border-primary/30 hover:bg-primary/2 transition-all duration-300"
-            >
-              <div className="text-center">
-                <div className="w-10 h-10 rounded bg-primary/10 flex items-center justify-center mx-auto mb-2 group-hover:bg-primary/20 transition-colors duration-300">
-                  <span className="font-bold text-primary text-xs font-semibold">{customer.logo}</span>
-                </div>
-                <p className="text-xs font-semibold text-foreground group-hover:text-primary transition-colors duration-300">{customer.name}</p>
-              </div>
-            </div>
-          ))}
+        <div className="relative">
+          {/* Left Fade */}
+          <div className="absolute left-0 top-0 bottom-0 w-12 md:w-24 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+          
+          {/* Right Fade */}
+          <div className="absolute right-0 top-0 bottom-0 w-12 md:w-24 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+
+          <Carousel
+            opts={{
+              loop: true,
+              align: "start",
+              dragFree: true,
+            }}
+            plugins={[
+              AutoScroll({
+                speed: 1,
+                stopOnInteraction: false,
+                stopOnMouseEnter: true,
+              }),
+            ]}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-8 items-center">
+              {customers.map((customer, i) => (
+                <CarouselItem key={i} className="pl-8 basis-1/2 md:basis-1/3 lg:basis-1/4">
+                  <div
+                    className="flex flex-col items-center justify-center gap-4 group select-none"
+                  >
+                    <div className="h-16 w-full flex items-center justify-center grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500">
+                      <img 
+                        src={customer.logo} 
+                        alt={`${customer.name} logo`}
+                        className="max-h-full max-w-[160px] object-contain"
+                      />
+                    </div>
+                    <p className="text-xs font-medium text-muted-foreground/60 group-hover:text-foreground transition-colors duration-300 text-center px-2">
+                      {customer.name}
+                    </p>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
         </div>
       </div>
     </section>

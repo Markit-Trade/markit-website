@@ -49,55 +49,21 @@ const InvestorsWaitlist = () => {
   };
 
   return (
-    <section id="investors-waitlist" className="py-16 px-12 md:px-20 bg-background">
-      <div className="max-w-[1200px] mx-auto">
-        <div className="grid md:grid-cols-2 gap-12 lg:gap-16">
-          {/* Investors Section */}
-          <div className="flex flex-col">
-            <div className="mb-8">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
-                Investor Materials
-              </h2>
-              <p className="text-sm text-muted-foreground leading-relaxed font-light">
-                Access our investment memo and detailed technical decks. For accredited and institutional investors only.
-              </p>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-4 mb-8">
-              <Button 
-                variant="outline-primary" 
-                size="lg" 
-                className="px-6 font-semibold uppercase text-xs hover:shadow-lg transition-shadow duration-300"
-              >
-                View Investment Memo
-              </Button>
-              <Button 
-                variant="outline-primary" 
-                size="lg" 
-                className="px-6 font-semibold uppercase text-xs hover:shadow-lg transition-shadow duration-300"
-              >
-                Request Deck Access
-              </Button>
-            </div>
-
-            <p className="text-xs text-muted-foreground/60 leading-relaxed font-light mt-auto">
-              All materials are confidential and subject to non-disclosure agreements. By accessing these materials, you confirm your status as an accredited or institutional investor and agree to maintain strict confidentiality.
+    <section id="waitlist" className="py-20 px-12 md:px-20 bg-background">
+      <div className="max-w-[600px] mx-auto">
+        {/* Waitlist Section */}
+        <div className="flex flex-col">
+          <div className="mb-8 text-center">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
+              Get Early Access
+            </h2>
+            <p className="text-sm text-muted-foreground leading-relaxed font-light">
+              Be the first to deploy MarkIt in your enterprise. We're onboarding institutional customers Q1 2025.
             </p>
           </div>
 
-          {/* Waitlist Section */}
-          <div className="flex flex-col">
-            <div className="mb-8">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
-                Get Early Access
-              </h2>
-              <p className="text-sm text-muted-foreground leading-relaxed font-light">
-                Be the first to deploy MarkIt in your enterprise. We're onboarding institutional customers Q1 2025.
-              </p>
-            </div>
-
-            <form onSubmit={handleSubmit} className="space-y-3 flex-1 flex flex-col">
-              <div className="space-y-2">
+          <form onSubmit={handleSubmit} className="space-y-3 flex-1 flex flex-col">
+            <div className="space-y-2">
                 <label htmlFor="name" className="text-xs font-semibold text-foreground block uppercase tracking-widest">
                   Full Name *
                 </label>
@@ -189,7 +155,6 @@ const InvestorsWaitlist = () => {
                 Join Waitlist
               </Button>
             </form>
-          </div>
         </div>
       </div>
     </section>

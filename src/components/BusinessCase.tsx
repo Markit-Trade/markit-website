@@ -370,7 +370,7 @@ e                 </div>
   };
 
   return (
-    <section id="features" className="py-10 px-12 md:px-20 bg-background">
+    <section id="features" className="py-20 px-12 md:px-20 bg-background">
       <div className="max-w-[1100px] mx-auto">
         {/* Section header - smaller */}
         <div className="mb-6">

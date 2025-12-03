@@ -1,6 +1,6 @@
 const ProductShowcase = () => {
   return (
-    <section id="product" className="pt-0 pb-0 px-0 md:px-0 bg-background">
+    <section id="product" className="py-20 px-0 md:px-0 bg-background">
       <div className="max-w-[1200px] mx-auto">
         {/* Section header */}
         <div className="mb-12">
