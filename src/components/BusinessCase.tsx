@@ -1,0 +1,457 @@
+import { useState } from "react";
+import remarkGfm from "remark-gfm";
+import ReactMarkdown from "react-markdown"
+
+type Tab = "write" | "preview";
+
+const BusinessCase = () => {
+  const features = [
+    {
+      id: "classification",
+      title: "Real-time Classification",
+      description: "Automatically classify HS codes with 99%+ accuracy using advanced ML. Eliminates manual entry errors and compliance risk.",
+    },
+    {
+      id: "audit",
+      title: "CF-28/29 Report Generation",
+      description: "Complete immutable records of every classification decision. Supports defensibility in regulatory audits.",
+    },
+    {
+      id: "integration",
+      title: "Enterprise Integration",
+      description: "Seamless API integration with your existing ERP systems. Deploy in weeks, not months.",
+    },
+    {
+      id: "compliance",
+      title: "Compliance Ready",
+      description: "Meet regulatory requirements and customs audit standards. Fully compliant with HS Code standards.",
+    },
+  ];
+
+  const [selectedFeature, setSelectedFeature] = useState(0);
+  const [tab, setTab] = useState<Tab>("preview");
+  const [suggestion, setSuggestion] = useState("");
+  const [value, setValue] = useState(`
+# HTSUS Classification Legal Brief  
+## **I. Introduction**
+
+This memorandum classifies a stainless-steel vacuum-insulated travel mug under the Harmonized Tariff Schedule of the United States (HTSUS). The central issue is whether the merchandise falls under heading 7323 (table, kitchen, or household articles of steel) or heading 9617 (vacuum flasks and similar vessels). The correct classification determines applicable duty rates and affects import compliance obligations.  
+**Deep Issue:** The question is whether the imported article is properly classified as a household steel article or as a vacuum flask; the answer is that it falls under heading 9617; the reasons are that the merchandise’s essential function, construction, and legal notes align with the scope of heading 9617.
+
+## **II. Statement of Facts**
+
+The merchandise is a double-walled stainless-steel vacuum-insulated travel mug with a capacity of 590 ml. It features:
+- Stainless-steel inner and outer walls
+- Vacuum insulation between walls
+- A removable plastic lid with a sliding closure
+- No electrical components
+- Intended use: maintaining the temperature of beverages during transport
+
+Assumptions:
+- The importer has not provided additional accessories.
+- The mug is complete and ready for retail sale.
+
+## **III. Applicable Law and Framework**
+
+### **A. General Rules of Interpretation (GRIs)**
+
+- **GRI 1:** Classification determined according to heading terms and legal notes.  
+- **GRI 2:** Covers incomplete/unfinished articles and mixtures/combinations.  
+- **GRI 3:** Governs goods prima facie classifiable under multiple headings.  
+	1. 3(a) most specific description  
+	2. 3(b) essential character  
+	3. 3(c) heading last in numerical order  
+- **GRI 4:** Residual rule—articles most akin to known goods.  
+- **GRI 5:** Containers and packing materials.  
+- **GRI 6:** Classification at subheading level using the same rules.
+
+### **B. Section Notes and Chapter Notes**
+
+- Notes are legally binding.  
+- Notes may exclude merchandise from headings even where terms appear to apply.  
+- Section XV Notes cover base-metal articles (including steel).  
+- Chapter 73 Notes cover steel household articles, but explicitly exclude goods of Chapter 96.
+
+### **C. Additional U.S. Rules of Interpretation**
+
+- Principal use determines classification for use-based headings.  
+- Parts provisions apply only when the article is identifiable as a part of another article.`);
+  const current = features[selectedFeature];
+
+  // Demo screen renderers - detailed and fleshed out
+  const renderClassificationDemo = () => (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between pb-3 border-b border-foreground/10">
+        <div>
+          <h3 className="text-sm font-bold text-foreground">Classification Queue</h3>
+          <p className="text-xs text-muted-foreground font-light">5 pending | 234 completed today</p>
+        </div>
+        <div className="text-right">
+          <div className="text-2xl font-bold text-primary">99.2%</div>
+          <p className="text-xs text-muted-foreground font-light">Accuracy</p>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        {[
+          { product: "Cotton Trousers", code: "6204.62", conf: "99%", supplier: "ASIA TEXTILES" },
+          { product: "Electronic Tablets", code: "8471.49", conf: "97%", supplier: "TECH GLOBAL" },
+          { product: "Organic Coffee Beans", code: "0901.11", conf: "98%", supplier: "AGRO EXPORTS" },
+        ].map((item, i) => (
+          <div key={i} className="p-2.5 bg-white dark:bg-foreground/5 rounded border border-foreground/5 hover:border-primary/30 transition-all duration-300">
+            <div className="flex items-center justify-between mb-1">
+              <div className="flex-1">
+                <p className="text-xs font-semibold text-foreground">{item.product}</p>
+                <p className="text-xs text-muted-foreground font-light">{item.supplier}</p>
+              </div>
+              <div className="flex items-center gap-3 ml-3">
+                <p className="text-xs text-muted-foreground font-mono font-bold text-primary">{item.code}</p>
+                <div className="text-right">
+                  <p className="text-xs font-bold text-foreground">{item.conf}</p>
+                  <div className="w-16 h-1.5 bg-primary/20 rounded-full mt-0.5">
+                    <div className="bg-primary h-1.5 rounded-full" style={{ width: item.conf }}></div>
+e                 </div>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center gap-1">
+              <div className="w-2 h-2 rounded-full bg-green-500"></div>
+              <p className="text-xs text-green-600 dark:text-green-400 font-medium">Ready for Review</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  const renderAuditDemo = (files=["P1SEA2506I018.xls", "HALLAFOCN04041.pdf"]) => (
+<div className="space-y-4">
+
+  {/* Tabs */}
+  <div className="flex gap-2 border-b border-[var(--color-border,#ddd)]">
+    <button
+      onClick={() => setTab("write")}
+      className={`
+        px-5 py-3
+        text-sm font-medium
+        cursor-pointer
+        rounded-t-md
+        bg-none border-none
+        text-muted-foreground
+        ${tab === "write" ? "text-primary border-b border-white bg-transparent" : ""}
+      `}
+    >
+      Markdown
+    </button>
+
+    <button
+      onClick={() => setTab("preview")}
+      className={`
+        px-5 py-3
+        text-sm font-medium
+        cursor-pointer
+        rounded-t-md
+        bg-none border-none
+        text-muted-foreground
+        ${tab === "preview" ? "text-primary border-b border-white bg-transparent" : ""}
+      `}
+    >
+      Preview
+    </button>
+  </div>
+
+  {/* Main split: editor + sidebar */}
+  <div className="flex w-full pt-4">
+    {/* Left 2/3: Editor */}
+    <div className="w-2/3 pr-6">
+      <div
+        className="
+          w-full
+          block
+          box-border
+          min-h-[24rem]
+          h-full
+          bg-white
+          overflow-y-hidden
+          overflow-x-visible
+          p-4
+          rounded-md
+          relative
+        "
+      >
+        <div
+          className="
+            relative
+            w-full
+            h-full
+            min-h-full
+          "
+        >
+          <textarea
+            onChange={(e) => setValue(e.target.value)}
+            value={value}
+            className={`
+              absolute inset-0
+              opacity-0
+              pointer-events-none
+              z-0
+              transition-opacity duration-[180ms] ease-in-out
+              w-full
+              h-full
+              border-none
+              resize-none
+              text-sm
+              leading-relaxed
+              bg-transparent
+              text-neutral-900
+              p-0
+              m-0
+              box-border
+              focus-visible:outline-none
+              ${tab === "write" ? "opacity-100 pointer-events-auto z-20" : ""}
+            `}
+          />
+
+          <div
+            className={`
+              absolute inset-0
+              opacity-0
+              pointer-events-none
+              z-0
+              transition-opacity duration-[180ms] ease-in-out
+              w-full
+              h-full
+              min-h-[22rem]
+              box-border
+              p-0
+              m-0
+              text-sm
+              leading-relaxed
+              text-neutral-900
+              overflow-y-scroll
+              ${tab === "preview" ? "opacity-100 pointer-events-auto z-20" : ""}
+            `}
+          >
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {value}
+            </ReactMarkdown>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Vertical Divider */}
+    <div className="w-px bg-gray-300 mx-4" />
+
+    {/* Right 1/3: Sidebar */}
+    <div className="w-1/3 pl-6">
+      <div className="flex flex-col gap-8 w-full">
+        {/* Suggestions Section */}
+        <div className="flex flex-col">
+          <h3 className="text-base font-semibold mb-2">Suggestions</h3>
+
+          <textarea
+            className="
+              w-full
+              min-h-8rem
+              mb-[var(--u4)]
+              p-[var(--u2)]
+              border
+              border-muted
+              rounded-md
+              bg-white
+              text-sm
+              font-[var(--font-ui)]
+              resize-y
+            "
+            placeholder="Regenerate with suggestion..."
+            onChange={(e) => {
+              setSuggestion(e.target.value);
+            }}
+          />
+
+          <button
+            className="
+              inline-flex
+              items-center
+              gap-[var(--u4)]
+              cursor-pointer
+              border
+              border-muted
+              bg-transparent
+              text-foreground
+              px-[var(--u6)]
+              py-[var(--u2)]
+              justify-center
+              font-light
+              hover:bg-[var(--color-accent)]
+              hover:text-primary
+              hover:border-primary
+              transition-colors
+            "
+          >
+            Submit
+          </button>
+        </div>
+
+        {/* Divider */}
+        <div className="my-[var(--u8)] border-t border-[var(--color-border)]" />
+
+      </div>
+    </div>
+  </div>
+
+</div>
+  );
+
+  const renderIntegrationDemo = () => (
+    <div className="space-y-4">
+      <div className="pb-3 border-b border-foreground/10">
+        <h3 className="text-sm font-bold text-foreground">Connected Systems</h3>
+        <p className="text-xs text-muted-foreground font-light mt-1">Real-time synchronization status</p>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
+        {[
+          { name: "SAP ERP", status: "Connected", detail: "Real-time sync", color: "green" },
+          { name: "Customs Portal", status: "Connected", detail: "Auto-filing enabled", color: "green" },
+          { name: "REST API", status: "Active", detail: "v1.2.5 deployed", color: "green" },
+          { name: "Webhooks", status: "Active", detail: "12 listeners active", color: "green" },
+        ].map((sys, i) => (
+          <div key={i} className="bg-white dark:bg-foreground/5 rounded border border-foreground/5 hover:border-primary/30 transition-all duration-300 p-3">
+            <div className="flex items-center gap-2 mb-2">
+              <div className={`w-2 h-2 rounded-full ${sys.color === 'green' ? 'bg-green-500' : 'bg-yellow-500'}`}></div>
+              <p className="text-xs font-bold text-foreground">{sys.name}</p>
+            </div>
+            <p className="text-xs text-muted-foreground font-light mb-1">{sys.detail}</p>
+            <p className="text-xs text-primary font-semibold">{sys.status}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  const renderComplianceDemo = () => (
+    <div className="space-y-4">
+      <div className="pb-3 border-b border-foreground/10">
+        <h3 className="text-sm font-bold text-foreground">Compliance Status</h3>
+        <p className="text-xs text-muted-foreground font-light mt-1">Current regulatory compliance snapshot</p>
+      </div>
+
+      <div className="space-y-2">
+        {[
+          { name: "US Customs (HS Code)", status: "Compliant", updated: "Updated Jan 2025" },
+          { name: "EU Combined Nomenclature", status: "Compliant", updated: "Updated Jan 2025" },
+          { name: "HS Code 2024 Standards", status: "Compliant", updated: "Current version" },
+          { name: "Audit Trail Standards", status: "Compliant", updated: "Immutable records" },
+        ].map((item, i) => (
+          <div key={i} className="flex items-center justify-between p-2.5 bg-white dark:bg-foreground/5 rounded border border-foreground/5 hover:border-primary/30 transition-all duration-300">
+            <div className="flex-1">
+              <p className="text-xs font-semibold text-foreground">{item.name}</p>
+              <p className="text-xs text-muted-foreground font-light">{item.updated}</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-green-500"></div>
+              <span className="text-xs text-green-600 dark:text-green-400 font-semibold">{item.status}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  const demoRenderers: Record<number, () => JSX.Element> = {
+    0: renderClassificationDemo,
+    1: renderAuditDemo,
+    2: renderIntegrationDemo,
+    3: renderComplianceDemo,
+  };
+
+  return (
+    <section id="features" className="py-20 px-12 md:px-20 bg-background">
+      <div className="max-w-7xl mx-auto">
+        {/* Section header - smaller */}
+        <div className="mb-6">
+          <h2 className="text-2xl md:text-3xl font-bold text-foreground leading-tight mb-2">
+            Enterprise-Grade Trade Compliance
+          </h2>
+          <p className="text-xs md:text-sm text-muted-foreground font-light">
+            Built for institutional scale.
+          </p>
+        </div>
+
+        {/* Main feature showcase */}
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-0" style={{ height: '620px' }}>
+          {/* Left sidebar with feature cells */}
+          <div className="bg-[#fff7f0] rounded-xl md:col-span-2 flex flex-col h-full">
+            {features.map((feature, i) => {
+              const isActive = i === selectedFeature;
+
+              return (
+                <button
+                  key={feature.id}
+                  onClick={() => setSelectedFeature(i)}
+                  className={`
+                    text-left p-6 transition-all duration-300
+                    flex flex-col
+                    w-full
+                    overflow-hidden
+                    ${
+                      isActive
+                        ? "bg-primary text-primary-foreground flex-[2]"
+                        : "bg-[#fff7f0] text-foreground/80 hover:bg-primary/5 flex-[1]"
+                    }
+                  `}
+                >
+                  {/* Number */}
+                  <div className="text-sm font-bold uppercase tracking-widest mb-1 opacity-70">
+                    {String(i + 1).padStart(2, "0")}
+                  </div>
+
+                  {/* Title — always visible */}
+                  <div className="text-lg leading-tight line-clamp-2 mb-6">
+                    {feature.title}
+                  </div>
+
+                  {/* Description — only visible on active tab */}
+                  <div
+                    className={`
+                      text-sm transition-all duration-300
+                      ${isActive ? "opacity-100 max-h-32" : "opacity-0 max-h-0"}
+                    `}
+                  >
+                    {feature.description}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Right main content area with app window inside */}
+          <div className="md:col-span-4 rounded-lg bg-[url('/gray-gradient.webp')] p-6 flex flex-col h-full overflow-hidden">
+            {/* Browser window mockup inside */}
+            <div className="relative rounded-lg overflow-hidden border border-foreground/10 bg-card shadow-lg flex flex-col flex-1 min-h-0">
+              {/* Browser chrome */}
+              <div className="bg-secondary px-4 py-2.5 flex items-center gap-2 border-b border-foreground/10 flex-shrink-0">
+                <div className="flex gap-1.5">
+                  <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
+                </div>
+                <div className="text-xs text-muted-foreground font-medium ml-2">markittrade.com</div>
+              </div>
+
+              {/* Demo content area - constrained height */}
+              <div className="flex-1 p-5 bg-gradient-to-br from-card via-background to-card/80 overflow-y-hidden min-h-0">
+                {demoRenderers[selectedFeature]()}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default BusinessCase;
