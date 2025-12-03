@@ -1,4 +1,8 @@
 import { useState } from "react";
+import remarkGfm from "remark-gfm";
+import ReactMarkdown from "react-markdown"
+
+type Tab = "write" | "preview";
 
 const BusinessCase = () => {
   const features = [
@@ -9,7 +13,7 @@ const BusinessCase = () => {
     },
     {
       id: "audit",
-      title: "Audit Trail & Governance",
+      title: "CF-28/29 Report Generation",
       description: "Complete immutable records of every classification decision. Supports defensibility in regulatory audits.",
     },
     {
@@ -25,6 +29,55 @@ const BusinessCase = () => {
   ];
 
   const [selectedFeature, setSelectedFeature] = useState(0);
+  const [tab, setTab] = useState<Tab>("preview");
+  const [suggestion, setSuggestion] = useState("");
+  const [value, setValue] = useState(`
+# HTSUS Classification Legal Brief  
+## **I. Introduction**
+
+This memorandum classifies a stainless-steel vacuum-insulated travel mug under the Harmonized Tariff Schedule of the United States (HTSUS). The central issue is whether the merchandise falls under heading 7323 (table, kitchen, or household articles of steel) or heading 9617 (vacuum flasks and similar vessels). The correct classification determines applicable duty rates and affects import compliance obligations.  
+**Deep Issue:** The question is whether the imported article is properly classified as a household steel article or as a vacuum flask; the answer is that it falls under heading 9617; the reasons are that the merchandise’s essential function, construction, and legal notes align with the scope of heading 9617.
+
+## **II. Statement of Facts**
+
+The merchandise is a double-walled stainless-steel vacuum-insulated travel mug with a capacity of 590 ml. It features:
+- Stainless-steel inner and outer walls
+- Vacuum insulation between walls
+- A removable plastic lid with a sliding closure
+- No electrical components
+- Intended use: maintaining the temperature of beverages during transport
+
+Assumptions:
+- The importer has not provided additional accessories.
+- The mug is complete and ready for retail sale.
+
+## **III. Applicable Law and Framework**
+
+### **A. General Rules of Interpretation (GRIs)**
+
+- **GRI 1:** Classification determined according to heading terms and legal notes.  
+- **GRI 2:** Covers incomplete/unfinished articles and mixtures/combinations.  
+- **GRI 3:** Governs goods prima facie classifiable under multiple headings.  
+	1. 3(a) most specific description  
+	2. 3(b) essential character  
+	3. 3(c) heading last in numerical order  
+- **GRI 4:** Residual rule—articles most akin to known goods.  
+- **GRI 5:** Containers and packing materials.  
+- **GRI 6:** Classification at subheading level using the same rules.
+
+### **B. Section Notes and Chapter Notes**
+
+- Notes are legally binding.  
+- Notes may exclude merchandise from headings even where terms appear to apply.  
+- Section XV Notes cover base-metal articles (including steel).  
+- Chapter 73 Notes cover steel household articles, but explicitly exclude goods of Chapter 96.
+
+### **C. Additional U.S. Rules of Interpretation**
+
+- Principal use determines classification for use-based headings.  
+- Parts provisions apply only when the article is identifiable as a part of another article.
+
+### **D. Exp**`);
   const current = features[selectedFeature];
 
   // Demo screen renderers - detailed and fleshed out
@@ -59,7 +112,7 @@ const BusinessCase = () => {
                   <p className="text-xs font-bold text-foreground">{item.conf}</p>
                   <div className="w-16 h-1.5 bg-primary/20 rounded-full mt-0.5">
                     <div className="bg-primary h-1.5 rounded-full" style={{ width: item.conf }}></div>
-                  </div>
+e                 </div>
                 </div>
               </div>
             </div>
@@ -73,36 +126,184 @@ const BusinessCase = () => {
     </div>
   );
 
-  const renderAuditDemo = () => (
-    <div className="space-y-4">
-      <div className="pb-3 border-b border-foreground/10">
-        <h3 className="text-sm font-bold text-foreground">Decision Timeline</h3>
-        <p className="text-xs text-muted-foreground font-light mt-1">HS Code 6204.62 - Cotton Trousers</p>
-      </div>
+  const renderAuditDemo = (files=["P1SEA2506I018.xls", "HALLAFOCN04041.pdf"]) => (
+<div className="space-y-4">
 
-      <div className="space-y-3">
-        <div className="border-l-4 border-green-500 pl-3 py-2">
-          <p className="text-xs font-semibold text-foreground">Classification Submitted</p>
-          <p className="text-xs text-muted-foreground font-light">AI v2.3 analyzed product specifications</p>
-          <p className="text-xs text-muted-foreground font-mono text-xs mt-1">14:23:45 UTC</p>
-        </div>
-        <div className="border-l-4 border-green-500 pl-3 py-2">
-          <p className="text-xs font-semibold text-foreground">Review Completed</p>
-          <p className="text-xs text-muted-foreground font-light">Sarah Chen (Compliance) approved</p>
-          <p className="text-xs text-muted-foreground font-mono text-xs mt-1">14:24:02 UTC</p>
-        </div>
-        <div className="border-l-4 border-green-500 pl-3 py-2">
-          <p className="text-xs font-semibold text-foreground">Recorded & Immutable</p>
-          <p className="text-xs text-muted-foreground font-light">Entry locked in audit trail with hash</p>
-          <p className="text-xs text-muted-foreground font-mono text-xs mt-1">14:24:03 UTC</p>
-        </div>
-      </div>
+  {/* Tabs */}
+  <div className="flex gap-2 border-b border-[var(--color-border,#ddd)]">
+    <button
+      onClick={() => setTab("write")}
+      className={`
+        px-5 py-3
+        text-sm font-medium
+        cursor-pointer
+        rounded-t-md
+        bg-none border-none
+        text-muted-foreground
+        ${tab === "write" ? "text-primary border-b border-white bg-transparent" : ""}
+      `}
+    >
+      Markdown
+    </button>
 
-      <div className="mt-2 p-3 bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/30 rounded">
-        <p className="text-xs text-green-700 dark:text-green-400 font-semibold">✓ Audit Ready</p>
-        <p className="text-xs text-green-600 dark:text-green-300 font-light mt-1">All decisions defensible and fully documented</p>
+    <button
+      onClick={() => setTab("preview")}
+      className={`
+        px-5 py-3
+        text-sm font-medium
+        cursor-pointer
+        rounded-t-md
+        bg-none border-none
+        text-muted-foreground
+        ${tab === "preview" ? "text-primary border-b border-white bg-transparent" : ""}
+      `}
+    >
+      Preview
+    </button>
+  </div>
+
+  {/* Main split: editor + sidebar */}
+  <div className="flex w-full pt-4">
+    {/* Left 2/3: Editor */}
+    <div className="w-2/3 pr-6">
+      <div
+        className="
+          w-full
+          block
+          box-border
+          min-h-[24rem]
+          h-full
+          bg-white
+          overflow-y-hidden
+          overflow-x-visible
+          p-4
+          rounded-md
+          relative
+        "
+      >
+        <div
+          className="
+            relative
+            w-full
+            h-full
+            min-h-full
+          "
+        >
+          <textarea
+            onChange={(e) => setValue(e.target.value)}
+            value={value}
+            className={`
+              absolute inset-0
+              opacity-0
+              pointer-events-none
+              z-0
+              transition-opacity duration-[180ms] ease-in-out
+              w-full
+              h-full
+              border-none
+              resize-none
+              text-sm
+              leading-relaxed
+              bg-transparent
+              text-neutral-900
+              p-0
+              m-0
+              box-border
+              focus-visible:outline-none
+              ${tab === "write" ? "opacity-100 pointer-events-auto z-20" : ""}
+            `}
+          />
+
+          <div
+            className={`
+              absolute inset-0
+              opacity-0
+              pointer-events-none
+              z-0
+              transition-opacity duration-[180ms] ease-in-out
+              w-full
+              h-full
+              min-h-[22rem]
+              box-border
+              p-0
+              m-0
+              text-sm
+              leading-relaxed
+              text-neutral-900
+              overflow-y-scroll
+              ${tab === "preview" ? "opacity-100 pointer-events-auto z-20" : ""}
+            `}
+          >
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {value}
+            </ReactMarkdown>
+          </div>
+        </div>
       </div>
     </div>
+
+    {/* Vertical Divider */}
+    <div className="w-px bg-gray-300 mx-4" />
+
+    {/* Right 1/3: Sidebar */}
+    <div className="w-1/3 pl-6">
+      <div className="flex flex-col gap-8 w-full">
+        {/* Suggestions Section */}
+        <div className="flex flex-col">
+          <h3 className="text-base font-semibold mb-2">Suggestions</h3>
+
+          <textarea
+            className="
+              w-full
+              min-h-8rem
+              mb-[var(--u4)]
+              p-[var(--u2)]
+              border
+              border-muted
+              rounded-md
+              bg-white
+              text-sm
+              font-[var(--font-ui)]
+              resize-y
+            "
+            placeholder="Regenerate with suggestion..."
+            onChange={(e) => {
+              setSuggestion(e.target.value);
+            }}
+          />
+
+          <button
+            className="
+              inline-flex
+              items-center
+              gap-[var(--u4)]
+              cursor-pointer
+              border
+              border-muted
+              bg-transparent
+              text-foreground
+              px-[var(--u6)]
+              py-[var(--u2)]
+              justify-center
+              font-light
+              hover:bg-[var(--color-accent)]
+              hover:text-primary
+              hover:border-primary
+              transition-colors
+            "
+          >
+            Submit
+          </button>
+        </div>
+
+        {/* Divider */}
+        <div className="my-[var(--u8)] border-t border-[var(--color-border)]" />
+
+      </div>
+    </div>
+  </div>
+
+</div>
   );
 
   const renderIntegrationDemo = () => (
@@ -214,11 +415,11 @@ const BusinessCase = () => {
                   <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
                   <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
                 </div>
-                <div className="text-xs text-muted-foreground font-medium ml-2">markit.enterprise.io</div>
+                <div className="text-xs text-muted-foreground font-medium ml-2">markittrade.com</div>
               </div>
 
               {/* Demo content area - constrained height */}
-              <div className="flex-1 p-5 bg-gradient-to-br from-card via-background to-card/80 overflow-y-auto min-h-0">
+              <div className="flex-1 p-5 bg-gradient-to-br from-card via-background to-card/80 overflow-y-hidden min-h-0">
                 {demoRenderers[selectedFeature]()}
               </div>
             </div>
