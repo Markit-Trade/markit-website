@@ -15,8 +15,8 @@
 /* Page/container */
 
 .classifications-container {
-  padding: var(--u8);
-  background-color: var(--color-bg-alt);
+  padding: var(--u4);
+  background-color: var(--color-bg);
 }
 
 /* Table */
@@ -89,6 +89,16 @@
 .tag--checking {
   background-color: #fef3c6;
   color: #b45309;
+}
+
+.tag--processing {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.tag--exporting {
+  background-color: #ffedd5;
+  color: #c2410c;
 }
 
 /* Spinner */

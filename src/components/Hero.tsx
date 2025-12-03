@@ -4,7 +4,7 @@ import AnimatedClassificationsTable from "@/components/demo/AnimatedClassificati
 
 const Hero = () => {
   return (
-    <section className="min-h-screen flex flex-col items-center justify-start pt-48 px-4 md:px-6 bg-background overflow-hidden">
+    <section className="min-h-screen flex flex-col items-center justify-start pt-48 pb-20 px-4 md:px-6 bg-background overflow-visible">
       
       {/* Hero Content */}
       <div className="max-w-4xl mx-auto text-center space-y-8 z-10">
@@ -29,13 +29,37 @@ const Hero = () => {
       </div>
 
       {/* Demo Placeholder */}
-      <div className="w-full max-w-6xl mt-16 relative z-10">
-        {/* Gradient Background Effect */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-blue-100 via-teal-50 to-orange-50 rounded-t-xl transform scale-[1.02] translate-y-2 -z-10 opacity-80 blur-xl" />
-        
-        {/* The Component */}
-        <div className="w-full bg-white/50 backdrop-blur-sm border border-white/20 rounded-t-xl shadow-2xl overflow-hidden">
-            <AnimatedClassificationsTable />
+      <div className="w-full max-w-7xl mt-12 relative z-10">
+        <div className="relative rounded-xl overflow-hidden">
+            {/* Background Image */}
+            <div className="absolute inset-0">
+                <img 
+                    src="/bg gradient.png" 
+                    alt="" 
+                    className="w-full h-full object-cover" 
+                />
+            </div>
+
+            {/* Content Container with Padding */}
+            <div className="relative z-10 px-4 pt-16 pb-0 md:px-12 md:pt-24 md:pb-0 lg:px-16 lg:pt-32 lg:pb-0">
+                {/* The Window Component */}
+                <div className="w-full max-w-5xl mx-auto bg-background rounded-t-lg shadow-2xl border-x border-t border-border overflow-hidden">
+                    {/* Window Chrome */}
+                    <div className="bg-muted/50 border-b border-border px-4 py-3 flex items-center gap-4">
+                        <div className="flex gap-1.5">
+                            <div className="w-3 h-3 rounded-full bg-[#FF5F56] border border-[#E0443E]" />
+                            <div className="w-3 h-3 rounded-full bg-[#FFBD2E] border border-[#DEA123]" />
+                            <div className="w-3 h-3 rounded-full bg-[#27C93F] border border-[#1AAB29]" />
+                        </div>
+                        <div className="text-xs font-medium text-muted-foreground/70">
+                            markit.enterprise.io
+                        </div>
+                    </div>
+                    <div className="bg-background">
+                        <AnimatedClassificationsTable />
+                    </div>
+                </div>
+            </div>
         </div>
       </div>
 
