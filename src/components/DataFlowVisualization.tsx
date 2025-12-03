@@ -54,7 +54,7 @@ const DataFlowVisualization = () => {
 
       // Define pipeline architecture with better positions
       const nodes = [
-        { x: 0.1, y: 0.5, label: "INGEST", size: 7, isCore: false },
+        { x: 0, y: 0.5, label: "INGEST", size: 7, isCore: false },
         { x: 0.25, y: 0.3, label: "PARSE", size: 6, isCore: false },
         { x: 0.25, y: 0.7, label: "VALIDATE", size: 6, isCore: false },
         { x: 0.45, y: 0.5, label: "CLASSIFY", size: 8, isCore: true },
