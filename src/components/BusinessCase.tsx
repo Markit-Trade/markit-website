@@ -75,9 +75,7 @@ Assumptions:
 ### **C. Additional U.S. Rules of Interpretation**
 
 - Principal use determines classification for use-based headings.  
-- Parts provisions apply only when the article is identifiable as a part of another article.
-
-### **D. Exp**`);
+- Parts provisions apply only when the article is identifiable as a part of another article.`);
   const current = features[selectedFeature];
 
   // Demo screen renderers - detailed and fleshed out
@@ -371,7 +369,7 @@ e                 </div>
 
   return (
     <section id="features" className="py-20 px-12 md:px-20 bg-background">
-      <div className="max-w-[1100px] mx-auto">
+      <div className="max-w-7xl mx-auto">
         {/* Section header - smaller */}
         <div className="mb-6">
           <h2 className="text-2xl md:text-3xl font-bold text-foreground leading-tight mb-2">
@@ -383,29 +381,54 @@ e                 </div>
         </div>
 
         {/* Main feature showcase */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-0" style={{ height: '620px' }}>
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-0" style={{ height: '620px' }}>
           {/* Left sidebar with feature cells */}
-          <div className="flex flex-col h-full">
-            {features.map((feature, i) => (
-              <button
-                key={feature.id}
-                onClick={() => setSelectedFeature(i)}
-                className={`text-left p-3 border border-foreground/10 transition-all duration-300 flex-1 flex flex-col justify-start ${
-                  i === selectedFeature
-                    ? "bg-primary text-primary-foreground border-primary"
-                    : "bg-card hover:border-primary/30 hover:bg-primary/5"
-                }`}
-              >
-                <div className="text-xs font-bold uppercase tracking-widest mb-1 opacity-70">
-                  {String(i + 1).padStart(2, "0")}
-                </div>
-                <div className="text-xs font-semibold leading-tight line-clamp-3">{feature.title}</div>
-              </button>
-            ))}
+          <div className="bg-[#fff7f0] rounded-xl md:col-span-2 flex flex-col h-full">
+            {features.map((feature, i) => {
+              const isActive = i === selectedFeature;
+
+              return (
+                <button
+                  key={feature.id}
+                  onClick={() => setSelectedFeature(i)}
+                  className={`
+                    text-left p-6 transition-all duration-300
+                    flex flex-col
+                    w-full
+                    overflow-hidden
+                    ${
+                      isActive
+                        ? "bg-primary text-primary-foreground flex-[2]"
+                        : "bg-[#fff7f0] text-foreground/80 hover:bg-primary/5 flex-[1]"
+                    }
+                  `}
+                >
+                  {/* Number */}
+                  <div className="text-sm font-bold uppercase tracking-widest mb-1 opacity-70">
+                    {String(i + 1).padStart(2, "0")}
+                  </div>
+
+                  {/* Title — always visible */}
+                  <div className="text-lg leading-tight line-clamp-2 mb-6">
+                    {feature.title}
+                  </div>
+
+                  {/* Description — only visible on active tab */}
+                  <div
+                    className={`
+                      text-sm transition-all duration-300
+                      ${isActive ? "opacity-100 max-h-32" : "opacity-0 max-h-0"}
+                    `}
+                  >
+                    {feature.description}
+                  </div>
+                </button>
+              );
+            })}
           </div>
 
           {/* Right main content area with app window inside */}
-          <div className="md:col-span-4 bg-card p-6 flex flex-col h-full overflow-hidden">
+          <div className="md:col-span-4 rounded-lg bg-[url('/gray-gradient.webp')] p-6 flex flex-col h-full overflow-hidden">
             {/* Browser window mockup inside */}
             <div className="relative rounded-lg overflow-hidden border border-foreground/10 bg-card shadow-lg flex flex-col flex-1 min-h-0">
               {/* Browser chrome */}
@@ -424,11 +447,6 @@ e                 </div>
               </div>
             </div>
 
-            {/* Feature description outside window */}
-            <div className="mt-5 space-y-2 flex-shrink-0">
-              <h3 className="text-sm font-bold text-foreground">{current.title}</h3>
-              <p className="text-xs text-muted-foreground leading-relaxed font-light">{current.description}</p>
-            </div>
           </div>
         </div>
       </div>
