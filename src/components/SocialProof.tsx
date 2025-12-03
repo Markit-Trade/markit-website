@@ -10,7 +10,7 @@ const SocialProof = () => {
     { name: "Hanwha", logo: "/hanwha logo.png" },
     { name: "Hyundai Motor Manufacturing Alabama", logo: "/hmma logo.png" },
     { name: "SK", logo: "/sk logo.png" },
-    { name: "Syeonewha", logo: "/syeonewha logo.png" },
+    { name: "Seoyon E-Hwa", logo: "/syeonewha logo.png" },
   ];
 
   return (
