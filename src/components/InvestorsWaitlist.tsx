@@ -103,6 +103,14 @@ const InvestorsWaitlist = () => {
   return (
     <section id="waitlist" className="py-20 px-12 md:px-20 bg-background">
       <div className="max-w-[600px] mx-auto">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold mb-3 text-foreground">
+            Get Early Access
+          </h2>
+          <p className="text-sm text-muted-foreground leading-relaxed font-light">
+            Be the first to deploy MarkIt in your enterprise. We're onboarding institutional customers Q1 2026.
+          </p>
+        </div>
         <ContactForm />
       </div>
     </section>
