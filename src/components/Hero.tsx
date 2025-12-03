@@ -34,7 +34,7 @@ const Hero = () => {
             {/* Background Image */}
             <div className="absolute inset-0">
                 <img 
-                    src="/bg gradient.png" 
+                    src="/bg-gradient.png" 
                     alt="" 
                     className="w-full h-full object-cover" 
                 />

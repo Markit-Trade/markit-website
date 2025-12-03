@@ -162,8 +162,6 @@ e                 </div>
 
   {/* Main split: editor + sidebar */}
   <div className="flex w-full pt-4">
-    {/* Left 2/3: Editor */}
-    <div className="w-2/3 pr-6">
       <div
         className="
           w-full
@@ -198,6 +196,7 @@ e                 </div>
               transition-opacity duration-[180ms] ease-in-out
               w-full
               h-full
+              min-h-[22rem]
               border-none
               resize-none
               text-sm
@@ -238,67 +237,6 @@ e                 </div>
           </div>
         </div>
       </div>
-    </div>
-
-    {/* Vertical Divider */}
-    <div className="w-px bg-gray-300 mx-4" />
-
-    {/* Right 1/3: Sidebar */}
-    <div className="w-1/3 pl-6">
-      <div className="flex flex-col gap-8 w-full">
-        {/* Suggestions Section */}
-        <div className="flex flex-col">
-          <h3 className="text-base font-semibold mb-2">Suggestions</h3>
-
-          <textarea
-            className="
-              w-full
-              min-h-8rem
-              mb-[var(--u4)]
-              p-[var(--u2)]
-              border
-              border-muted
-              rounded-md
-              bg-white
-              text-sm
-              font-[var(--font-ui)]
-              resize-y
-            "
-            placeholder="Regenerate with suggestion..."
-            onChange={(e) => {
-              setSuggestion(e.target.value);
-            }}
-          />
-
-          <button
-            className="
-              inline-flex
-              items-center
-              gap-[var(--u4)]
-              cursor-pointer
-              border
-              border-muted
-              bg-transparent
-              text-foreground
-              px-[var(--u6)]
-              py-[var(--u2)]
-              justify-center
-              font-light
-              hover:bg-[var(--color-accent)]
-              hover:text-primary
-              hover:border-primary
-              transition-colors
-            "
-          >
-            Submit
-          </button>
-        </div>
-
-        {/* Divider */}
-        <div className="my-[var(--u8)] border-t border-[var(--color-border)]" />
-
-      </div>
-    </div>
   </div>
 
 </div>
@@ -428,7 +366,7 @@ e                 </div>
           </div>
 
           {/* Right main content area with app window inside */}
-          <div className="md:col-span-4 rounded-lg bg-[url('/gray-gradient.webp')] p-6 flex flex-col h-full overflow-hidden">
+          <div className="md:col-span-4 rounded-lg bg-cover bg-[url('/bg-gradient.png')] p-6 flex flex-col h-full overflow-hidden">
             {/* Browser window mockup inside */}
             <div className="relative rounded-lg overflow-hidden border border-foreground/10 bg-card shadow-lg flex flex-col flex-1 min-h-0">
               {/* Browser chrome */}
