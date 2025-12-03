@@ -9,7 +9,6 @@ const SocialProof = () => {
   const customers = [
     { name: "Hanwha", logo: "/hanwha logo.png" },
     { name: "Hyundai Motor Manufacturing Alabama", logo: "/hmma logo.png" },
-    { name: "Schaeffler", logo: "/schaf logo.png" },
     { name: "SK", logo: "/sk logo.png" },
     { name: "Syeonewha", logo: "/syeonewha logo.png" },
   ];
