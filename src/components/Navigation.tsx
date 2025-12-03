@@ -70,18 +70,8 @@ const Navigation = () => {
           >
             Features
           </button>
-          <button
-            onClick={() => scrollToSection("team")}
-            className="text-muted-foreground hover:text-foreground transition-colors duration-200 font-medium text-xs tracking-widest uppercase text-nowrap h-full flex items-center px-6"
-          >
-            Team
-          </button>
-          <button
-            onClick={() => scrollToSection("investors-waitlist")}
-            className="text-muted-foreground hover:text-foreground transition-colors duration-200 font-medium text-xs tracking-widest uppercase text-nowrap h-full flex items-center px-6"
-          >
-            Investors
-          </button>
+        
+         
 
           {/* Dark mode toggle - no separator */}
           <div className="flex items-center h-full ml-auto">
