@@ -13,19 +13,14 @@ const Hero = () => {
           Global Trade Compliance
         </h1>
         
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto w-full">
-          <Input 
-            type="email" 
-            placeholder="Enter your work email" 
-            className="h-12 rounded-full px-6 bg-background border-input"
-          />
+        {/*<div className="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto w-full">
           <Button 
             size="lg" 
             className="h-12 rounded-full px-8 font-medium bg-primary text-primary-foreground hover:bg-primary/90 whitespace-nowrap w-full sm:w-auto"
           >
             Schedule Demo
           </Button>
-        </div>
+        </div>*/}
       </div>
 
       {/* Demo Placeholder */}
